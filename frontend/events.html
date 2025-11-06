@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js"></script>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+    <header class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-6 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-3xl font-bold">Event Manager</h1>
+            <a href="/logout" class="bg-red-500 px-4 py-2 rounded hover:bg-red-600 transition">Logout</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-6">
+        <section class="bg-white shadow-lg rounded-lg p-6 mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800">Create Event</h2>
+            <button id="open-modal" class="bg-blue-500 text-white px-6 py-3 rounded hover:bg-blue-600 transition">Create
+                Event</button>
+        </section>
+
+        <section class="bg-white shadow-lg rounded-lg p-6">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800">Your Events</h2>
+            <div id="events-list" hx-get="/hx/events/view" hx-trigger="load">
+                <!-- Events will be dynamically loaded here -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal -->
+    <div id="event-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-lg shadow-lg w-1/3 p-6">
+            <h3 class="text-xl font-semibold mb-4">Create Event</h3>
+            <form hx-post="/hx/events/create" hx-target="#events-list" hx-swap="innerHTML">
+                <div class="mb-4">
+                    <label for="title" class="block text-gray-700 font-medium">Title</label>
+                    <input type="text" id="title" name="title"
+                        class="w-full border rounded p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Enter event title" required>
+                </div>
+                <div class="mb-4">
+                    <label for="description" class="block text-gray-700 font-medium">Description</label>
+                    <textarea id="description" name="description"
+                        class="w-full border rounded p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Enter event description" required></textarea>
+                </div>
+                <div class="mb-4 relative">
+                    <label for="date" class="block text-gray-700 font-medium">Date</label>
+                    <input type="date" id="date" name="date"
+                        class="w-full border rounded p-3 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                </div>
+                <div class="flex justify-end">
+                    <button type="button" id="close-modal"
+                        class="bg-gray-300 text-gray-700 px-4 py-2 rounded mr-2 hover:bg-gray-400 transition">Cancel</button>
+                    <button type="submit"
+                        class="bg-blue-500 text-white px-6 py-3 rounded hover:bg-blue-600 transition">Create
+                        Event</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Modal functionality
+        const modal = document.getElementById('event-modal');
+        const openModalButton = document.getElementById('open-modal');
+        const closeModalButton = document.getElementById('close-modal');
+
+        openModalButton.addEventListener('click', () => {
+            modal.classList.remove('hidden');
+        });
+
+        closeModalButton.addEventListener('click', () => {
+            modal.classList.add('hidden');
+        });
+    </script>
+</body>
+
+</html>

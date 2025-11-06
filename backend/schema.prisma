@@ -1,0 +1,35 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:database.db"
+}
+
+generator client {
+  provider             = "prisma-client-py"
+  recursive_type_depth = 5
+}
+
+model User {
+  id         Int       @id @default(autoincrement())
+  username   String    @unique
+  name       String
+  email      String
+  password   String
+  // image_url String?
+  created_at DateTime  @default(now())
+  deleted_at DateTime?
+
+  events Event[]
+}
+
+model Event {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  date        DateTime
+  user_id     Int
+
+  user User @relation(fields: [user_id], references: [id])
+
+  created_at DateTime  @default(now())
+  deleted_at DateTime?
+}

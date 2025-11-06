@@ -1,0 +1,13 @@
+<div class="space-y-4">
+    {% for event in events %}
+    <div class="bg-white shadow-md rounded-lg p-4 flex justify-between items-center">
+        <div>
+            <h3 class="text-lg font-semibold text-gray-800">{{ event.title }}</h3>
+            <p class="text-gray-600">{{ event.description }}</p>
+            <p class="text-gray-500 text-sm">{{ event.date }}</p>
+        </div>
+        <button hx-delete="/hx/events/{{ event.id }}/delete" hx-target="#events-list" hx-swap="innerHTML"
+            class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Delete</button>
+    </div>
+    {% endfor %}
+</div>
