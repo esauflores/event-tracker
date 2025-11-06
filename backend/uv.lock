@@ -204,7 +204,7 @@ wheels = [
 ]
 
 [[package]]
-name = "expense-splitter"
+name = "event-tracker-backend"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
