@@ -264,8 +264,19 @@ async def hx_view_events(request: Request):
         return HTMLResponse("Unauthorized", status_code=401)
 
     events = await prisma.event.find_many(
-        where={"user_id": user.id}, order={"created_at": "desc"}
+        where={"user_id": user.id}, order={"date": "asc"}
     )
+
+    # convert to just date
+    for event in events:
+        event.date = event.date.strftime("%Y-%m-%d")
+
+    # remove events past today
+    today = datetime.now(timezone.utc).date()
+    events = [
+        event for event in events if datetime.fromisoformat(event.date).date() >= today
+    ]
+
     return templates.TemplateResponse(
         "events_list.html",
         {"request": request, "events": events, "user": user},
